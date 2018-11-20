@@ -65,7 +65,7 @@ TEST_OPTS =
 # Test with previous test files not just the test files for the
 # current step. Step 0 and 1 tests are special and not included in
 # later steps.
-REGRESS =
+REGRESS=1
 
 DEFERRABLE=1
 OPTIONAL=1
@@ -80,7 +80,7 @@ DOCKERIZE =
 
 IMPLS = ada awk bash basic c chuck clojure coffee common-lisp cpp crystal cs d dart \
 	elisp elixir elm erlang es6 factor fantom forth fsharp go groovy gnu-smalltalk \
-	guile haskell haxe hy io java js julia kotlin livescript logo lua make mal \
+	guile hal haskell haxe hy io java js julia kotlin livescript logo lua make mal \
 	matlab miniMAL nasm nim objc objpascal ocaml perl perl6 php picolisp plpgsql \
 	plsql powershell ps python r racket rexx rpython ruby rust scala scheme skew \
 	swift swift3 tcl ts vb vhdl vimscript yorick
@@ -196,6 +196,7 @@ go_STEP_TO_PROG =      go/$($(1))
 groovy_STEP_TO_PROG =  groovy/$($(1)).groovy
 gnu-smalltalk_STEP_TO_PROG = gnu-smalltalk/$($(1)).st
 guile_STEP_TO_PROG =   guile/$($(1)).scm
+hal_STEP_TO_PROG =     hal/$($(1))
 haskell_STEP_TO_PROG = haskell/$($(1))
 haxe_STEP_TO_PROG =    $(haxe_STEP_TO_PROG_$(haxe_MODE))
 hy_STEP_TO_PROG =      hy/$($(1)).hy

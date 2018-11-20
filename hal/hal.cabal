@@ -1,0 +1,30 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.31.0.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 850ae63202db3c8a652ceb1c0c70fca8919cb08943e7fc96d314e03f44da1da2
+
+name:           hal
+version:        0.1.0.0
+category:       Web
+homepage:       https://github.com/githubuser/hal#readme
+author:         Author name here
+maintainer:     example@example.com
+copyright:      2018 Author name here
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+
+executable step0_repl
+  main-is: step0_repl.hs
+  other-modules:
+      Paths_hal
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+  default-language: Haskell2010
