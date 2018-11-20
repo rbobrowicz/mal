@@ -17,8 +17,16 @@ dependencies:
   - base >= 4.7 && < 5
   - directory
   - haskeline
+  - megaparsec
+  - containers
+  - unordered-containers
+  - hashable
 
 executables:
   step0_repl:
     source-dirs:      src
     main:             step0_repl.hs
+  step1_read_print:
+    source-dirs:      src
+    main:             step1_read_print.hs
+
