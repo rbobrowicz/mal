@@ -4,11 +4,11 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 850ae63202db3c8a652ceb1c0c70fca8919cb08943e7fc96d314e03f44da1da2
+-- hash: 63faed306dd68f4a891acbe00af242dcd2e94ad18d008ee502756c410ac1d9fd
 
 name:           hal
 version:        0.1.0.0
-category:       Web
+category:       Language
 homepage:       https://github.com/githubuser/hal#readme
 author:         Author name here
 maintainer:     example@example.com
@@ -25,6 +25,9 @@ executable step0_repl
       Paths_hal
   hs-source-dirs:
       src
+  ghc-options: -Wall
   build-depends:
       base >=4.7 && <5
+    , directory
+    , haskeline
   default-language: Haskell2010

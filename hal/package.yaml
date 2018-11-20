@@ -7,12 +7,16 @@ license:             BSD3
 author:              Author name here
 maintainer:          example@example.com
 copyright:           2018 Author name here
-category:            Web
+category:            Language
 extra-source-files:
 - README.md
 
+ghc-options: -Wall
+
 dependencies:
   - base >= 4.7 && < 5
+  - directory
+  - haskeline
 
 executables:
   step0_repl:
