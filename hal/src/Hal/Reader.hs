@@ -27,7 +27,7 @@ isHalWhiteSpace :: Char -> Bool
 isHalWhiteSpace c = isSpace c || c == ','
 
 isHalSymbolChar :: Char -> Bool
-isHalSymbolChar c = c `notElem` " (){}[]\"~@"
+isHalSymbolChar c = c `notElem` " (){}[]\"~@`"
 
 parseHalValue :: Parser HalValue
 parseHalValue =  lexeme go
