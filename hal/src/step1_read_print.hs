@@ -3,6 +3,7 @@
 
 module Main where
 
+import Control.Monad
 import System.Console.Haskeline
 import System.Directory
 
@@ -10,12 +11,12 @@ import Hal.Printer
 import Hal.Reader
 import Hal.Types
 
-halEval :: HalValue -> HalValue
+halEval :: [HalValue] -> [HalValue]
 halEval = id
 
-rep :: String -> String
+rep :: String -> [String]
 rep (halRead -> Right val) = halPrint . halEval $ val
-rep (halRead -> Left err) = err
+rep (halRead -> Left err) = [err]
 rep _ = error "This shouldn't happen"
 
 
@@ -35,5 +36,5 @@ main = do
       loop = getInputLine "user> " >>= \case
         Nothing -> pure ()
         Just input -> do
-          outputStrLn . rep $ input
+          forM_ (rep input) outputStrLn
           loop

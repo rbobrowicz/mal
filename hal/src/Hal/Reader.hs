@@ -20,8 +20,11 @@ import Hal.Types
 
 type Parser = Parsec Void String
 
-halRead :: String -> Either String HalValue
-halRead s = bimap P.parseErrorPretty id $ parse parseHalValue "" (dropWhile isHalWhiteSpace s)
+halRead :: String -> Either String [HalValue]
+halRead s = bimap P.parseErrorPretty id $ parse p "" s'
+  where
+    p  = P.many parseHalValue <* P.eof
+    s' = dropWhile isHalWhiteSpace s
 
 isHalWhiteSpace :: Char -> Bool
 isHalWhiteSpace c = isSpace c || c == ','
