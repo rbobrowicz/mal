@@ -73,6 +73,8 @@ false
 ;;;;=>"abc\ndef"
 ""
 ;=>""
+(abc"def")
+;=>(abc "def")
 
 ;; Testing reader errors
 ;;; TODO: fix these so they fail correctly
@@ -102,7 +104,22 @@ false
 ;=>(quasiquote (1 (unquote a) 3))
 ~@(1 2 3)
 ;=>(splice-unquote (1 2 3))
-
+(1'1)
+;=>(1 (quote 1))
+(1`1)
+;=>(1 (quasiquote 1))
+(1~1)
+;=>(1 (unquote 1))
+(1~@1)
+;=>(1 (splice-unquote 1))
+(x'x)
+;=>(x'x)
+(x`x)
+;=>(x (quasiquote x))
+(x~x)
+;=>(x (unquote x))
+(x~@x)
+;=>(x (splice-unquote x))
 
 ;>>> optional=True
 ;;
@@ -153,3 +170,7 @@ false
 ;; Testing read of @/deref
 @a
 ;=>(deref a)
+(1@1)
+;=>(1 (deref 1))
+(x@x)
+;=>(x (deref x))
