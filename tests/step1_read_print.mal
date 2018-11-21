@@ -20,6 +20,10 @@ abc5
 ;=>abc5
 abc-def
 ;=>abc-def
+123abc
+;=>123abc
+1+
+;=>1+
 
 
 ;; Testing read of lists
