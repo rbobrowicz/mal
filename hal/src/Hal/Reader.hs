@@ -27,7 +27,7 @@ isHalWhiteSpace :: Char -> Bool
 isHalWhiteSpace c = isSpace c || c == ','
 
 isHalSymbolChar :: Char -> Bool
-isHalSymbolChar c = c `notElem` " (){}[]\"~@`"
+isHalSymbolChar c = c `notElem` " ,;(){}[]\"~@`"
 
 parseHalValue :: Parser HalValue
 parseHalValue =  lexeme go
@@ -49,7 +49,7 @@ whiteSpace :: Parser ()
 whiteSpace = void $ P.takeWhile1P (Just "white space") isHalWhiteSpace
 
 comments :: Parser ()
-comments = L.skipLineComment ";;"
+comments = L.skipLineComment ";"
 
 space :: Parser ()
 space = L.space whiteSpace comments P.empty
@@ -61,7 +61,10 @@ symbol :: String -> Parser String
 symbol = L.symbol space
 
 parseInt :: Parser HalValue
-parseInt = HalInt <$> L.signed (pure ()) (lexeme L.decimal)
+parseInt = HalInt <$> p
+  where
+    p = L.signed (pure ()) L.decimal <* P.notFollowedBy follow
+    follow = P.satisfy (\c -> c /= '\'' && isHalSymbolChar c)
 
 parseSymbol :: Parser HalValue
 parseSymbol = do
