@@ -33,7 +33,7 @@ isHalSymbolChar :: Char -> Bool
 isHalSymbolChar c = c `notElem` " ,;(){}[]\"~@`"
 
 parseHalValue :: Parser HalValue
-parseHalValue =  lexeme go
+parseHalValue = P.hidden $ lexeme go
   where go = parseQuote
          <|> parseQuasiQuote
          <|> P.try parseSpliceUnquote
@@ -79,15 +79,19 @@ parseSymbol = do
     _ -> pure $ HalSymbol s
 
 parseList :: Parser HalValue
-parseList = HalList <$> P.between (symbol "(") (symbol ")") (P.many parseHalValue)
+parseList = HalList <$> p
+  where
+    p = symbol "(" *> P.many parseHalValue <* symbol ")"
 
 parseString :: Parser HalValue
-parseString = HalString <$> (P.char '"' *> P.manyTill L.charLiteral (P.char '"'))
+parseString = HalString <$> p
+  where
+    p = P.char '"' *> P.manyTill (P.hidden L.charLiteral) (P.char '"')
 
 parseMacro :: String -> String -> Parser HalValue
 parseMacro sym form = do
   void $ symbol sym
-  val <- parseHalValue
+  val <- P.label "form" parseHalValue
   pure $ HalList [HalSymbol form, val]
 
 parseQuote :: Parser HalValue
@@ -108,15 +112,18 @@ parseDeref = parseMacro "@" "deref"
 parseKeyword :: Parser HalValue
 parseKeyword = do
   void $ P.char ':'
-  HalKeyword <$> lexeme (P.takeWhile1P (Just "symbol") isHalSymbolChar)
+  HalKeyword <$> lexeme (P.takeWhile1P (Just "keyword") isHalSymbolChar)
 
 parseVector :: Parser HalValue
-parseVector = HalVector . Seq.fromList <$> P.between (symbol "[") (symbol "]") (P.many parseHalValue)
+parseVector = HalVector . Seq.fromList <$> p
+  where
+    p = symbol "[" *> P.many parseHalValue <* symbol "]"
 
 parseHashMap :: Parser HalValue
 parseHashMap = do
   void $ symbol "{"
-  kvs <- P.many ((,) <$> lexeme parseHalValue <*> lexeme parseHalValue)
+  kvs <- P.many ((,) <$> lexeme parseHalValue
+                     <*> P.label "hashmap value" (lexeme parseHalValue))
   void $ symbol "}"
   pure . HalHashMap . HM.fromList $ kvs
 
