@@ -10,20 +10,18 @@ import qualified Data.HashMap.Strict as HM
 
 import Hal.Types
 
-halPrint :: [HalValue] -> [String]
-halPrint = map printVal
-
-printVal :: HalValue -> String
-printVal (HalList xs) = "(" ++ unwords (map printVal xs) ++ ")"
-printVal (HalInt i) = show i
-printVal (HalSymbol s) = s
-printVal (HalString s) = show s
-printVal (HalKeyword s) = ':' : s
-printVal (HalVector xs) = "[" ++ unwords (map printVal . toList $ xs) ++ "]"
-printVal (HalHashMap xs) = "{" ++ unwords (map printKV . HM.toList $ xs) ++ "}"
-printVal HalTrue = "true"
-printVal HalFalse = "false"
-printVal HalNil = "nil"
+halPrint :: HalValue -> String
+halPrint (HalList xs) = "(" ++ unwords (map halPrint xs) ++ ")"
+halPrint (HalInt i) = show i
+halPrint (HalSymbol s) = s
+halPrint (HalString s) = show s
+halPrint (HalKeyword s) = ':' : s
+halPrint (HalVector xs) = "[" ++ unwords (map halPrint . toList $ xs) ++ "]"
+halPrint (HalHashMap xs) = "{" ++ unwords (map printKV . HM.toList $ xs) ++ "}"
+halPrint HalTrue = "true"
+halPrint HalFalse = "false"
+halPrint HalNil = "nil"
+halPrint (HalFunc (BuiltIn s _)) = "<<builtin " ++ s ++ ">>"
 
 printKV :: (HalValue, HalValue) -> String
-printKV (k,v) = printVal k ++ " " ++ printVal v
+printKV (k,v) = halPrint k ++ " " ++ halPrint v

@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 39233c192dd96f734f1c04af14ff49dfc88a739e6bd69aaa25c94d002b21b338
+-- hash: ce96cfd6a5a07bb631adc9f5a6a2194d6730a5f750ba8f3c2cf7db4bfbc63f33
 
 name:           hal
 version:        0.1.0.0
@@ -41,6 +41,26 @@ executable step0_repl
 
 executable step1_read_print
   main-is: step1_read_print.hs
+  other-modules:
+      Hal.Printer
+      Hal.Reader
+      Hal.Types
+      Paths_hal
+  hs-source-dirs:
+      src
+  ghc-options: -Wall
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , directory
+    , hashable
+    , haskeline
+    , megaparsec
+    , unordered-containers
+  default-language: Haskell2010
+
+executable step2_eval
+  main-is: step2_eval.hs
   other-modules:
       Hal.Printer
       Hal.Reader

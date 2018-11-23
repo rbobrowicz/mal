@@ -11,11 +11,11 @@ import Hal.Printer
 import Hal.Reader
 import Hal.Types
 
-halEval :: [HalValue] -> [HalValue]
+halEval :: HalValue -> HalValue
 halEval = id
 
 rep :: String -> [String]
-rep (halRead -> Right val) = halPrint . halEval $ val
+rep (halRead -> Right val) = map (halPrint . halEval) $ val
 rep (halRead -> Left err) = [err]
 rep _ = error "This shouldn't happen"
 

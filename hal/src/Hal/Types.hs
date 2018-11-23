@@ -6,6 +6,12 @@ import Data.HashMap.Strict (HashMap)
 import Data.Sequence (Seq)
 import GHC.Exts (IsList(..))
 
+type HalEnv = HashMap String HalValue
+data HalFunc = BuiltIn String ([HalValue] -> HalValue)
+
+instance Eq HalFunc where
+  (==) (BuiltIn x _) (BuiltIn y _) = x == y
+
 data HalValue = HalList [HalValue]
               | HalSymbol String
               | HalInt Int
@@ -16,6 +22,7 @@ data HalValue = HalList [HalValue]
               | HalKeyword String
               | HalVector (Seq HalValue)
               | HalHashMap (HashMap HalValue HalValue)
+              | HalFunc HalFunc
   deriving (Eq)
 
 -- Unfortunatel there is no premade instance of Hashable (Seq a)
@@ -31,4 +38,5 @@ instance Hashable HalValue where
   hashWithSalt s (HalKeyword kw) = s `hashWithSalt` (7 :: Int) `hashWithSalt` kw
   hashWithSalt s (HalVector v) = s `hashWithSalt` (8 :: Int) `hashWithSalt` toList v
   hashWithSalt s (HalHashMap m) = s `hashWithSalt` (9 :: Int) `hashWithSalt` m
+  hashWithSalt s (HalFunc (BuiltIn x _)) = s `hashWithSalt` (10 :: Int) `hashWithSalt` x
 

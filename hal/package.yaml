@@ -29,4 +29,7 @@ executables:
   step1_read_print:
     source-dirs:      src
     main:             step1_read_print.hs
+  step2_eval:
+    source-dirs:      src
+    main:             step2_eval.hs
 
